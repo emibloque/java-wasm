@@ -3,9 +3,9 @@
     <title>Bytecoder Test</title>
   </head>
   <body>
-    <script type="text/javascript" src="wasm/bytecoder/bytecoder.js"></script>
+    <script type="text/javascript" src="bytecoder.js"></script>
     <script>
-      var bytecoderWasmFile = "wasm/bytecoder/bytecoder.wasm";
+      var bytecoderWasmFile = "bytecoder.wasm";
       var instantiated = function (result) {
         bytecoder.init(result.instance);
         bytecoder.exports.initMemory(0);

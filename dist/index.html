@@ -3,7 +3,44 @@
     <title>Bytecoder Test</title>
   </head>
   <body>
-    <iframe src="js-iframe.html"></iframe>
-    <iframe src="wasm-iframe.html"></iframe>
+    <script>
+    function benchmark(func, loop) {
+      //func(); // warm-up
+      const startTime = performance.now();
+      for (var i = 0; i < loop; i++) {
+        func();
+      }
+      const endTime = performance.now();
+      return ((endTime - startTime) / loop).toFixed(4);
+    }
+
+    function multiplyInt(n) {
+      let c = 1.0;
+      for (var i = 0; i < n; i++) {
+        c = c * 1.0 * 1.0;
+      }
+      return c;
+    }
+
+    function fib(n) {
+      if (n === 1) return 1;
+      if (n === 2) return 1;
+      return fib(n-1) + fib(n-2);
+    }
+
+    const functions = {
+      "Fibonacci": () => fib(40),
+      "MultiplyInt": () => multiplyInt(268435456),
+    }
+
+
+    console.log(`Native JS: Start`);
+    for (const [name, fn] of Object.entries(functions)) {
+      console.log(`Native JS: Time [${name}]: ${benchmark(fn, 10)}`);
+    }
+    console.log(`Native JS: Done`);
+    </script>
+    <iframe src="js/bytecoder/index.html"></iframe>
+    <iframe src="wasm/bytecoder/index.html"></iframe>
   </body>
 </html>
