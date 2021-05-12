@@ -359,5 +359,18 @@ var bytecoder = {
              endLONG : function(thisref,addr) {
              },
          },
+         performancetestdata: {
+             sumArray: function(target) {
+               return bytecoder.toBytecoderReference(bytecoder.referenceTable[target].sumArray);
+             },
+         },
+         intarray: {
+             intArrayLength: function(target) {
+               return bytecoder.referenceTable[target].length;
+             },
+             getIntValueINT: function(target,arg0) {
+               return bytecoder.referenceTable[target][arg0];
+             },
+         },
      },
 };

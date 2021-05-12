@@ -1,15 +1,43 @@
 package es.uniovi.wasm;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
+
+import de.mirkosertic.bytecoder.api.web.IntArray;
 
 class PerformanceTest {
 
-    public static int multiplyInt(int n) {
+    public static int multiplyInt(int a, int b, int n) {
         int c = 1;
         for (var i = 0; i < n; i++) {
-            c = c * 1 * 1;
+            c = c * a * b;
         }
         return c;
+    }
+
+    public static double multiplyDouble(double a, double b, int n) {
+        double c = 1.0;
+        for (var i = 0; i < n; i++) {
+            c = c * a * b;
+        }
+        return c;
+    }
+
+    public static double sumInt(IntArray array, int n) {
+        int s = 0;
+        for (int i = 0; i < n; i++) {
+            s += array.getIntValue(i);
+        }
+        return s;
+    }
+
+    public static double sumInt(int[] array, int n) {
+        int s = 0;
+        for (int i = 0; i < n; i++) {
+            s += array[i];
+        }
+        return s;
     }
 
     public static int fib(int n) {
@@ -28,9 +56,20 @@ class PerformanceTest {
     }
 
     public static void run(String env) {
+        var data = PerformanceTestData.performanceTestData();
+
+        System.out.println(env + ": Build array");
+        var sumArray = toArray(data.sumArray());
+
         HashMap<String, Runnable> funcs = new HashMap<>() {{
+            /*
+
+             */
             put("Fibonacci", () -> fib(40));
-            put("MultiplyInt", () -> multiplyInt(268435456));
+            put("MultiplyInt", () -> multiplyInt(1 , 1, 0x10000000));
+            put("MultiplyDouble", () -> multiplyDouble(1.0 , 1.0, 0x10000000));
+            put("SumInt", () -> sumInt(data.sumArray(), data.sumArray().intArrayLength()));
+            put("SumIntNative", () -> sumInt(sumArray, sumArray.length));
         }};
 
         System.out.println(env + ": Start");
@@ -40,6 +79,16 @@ class PerformanceTest {
         }
 
         System.out.println(env + ": Done");
+    }
+
+    private static int[] toArray(IntArray array) {
+        int length = array.intArrayLength();
+        int[] result = new int[length];
+        var rand = new Random();
+        for (int i = 0; i < length; i++) {
+            result[i] = rand.nextInt();
+        }
+        return result;
     }
 }
 
