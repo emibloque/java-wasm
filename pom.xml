@@ -103,6 +103,8 @@
                                 <buildDirectory>${project.basedir}/dist/wasm</buildDirectory>
                                 <enableExceptionHandling>false</enableExceptionHandling>
                                 <optimizationLevel>ALL</optimizationLevel>
+                                <wasmInitialPages>16384</wasmInitialPages>
+                                <wasmMaximumPages>16384</wasmMaximumPages>
                             </configuration>
                         </execution>
                     </executions>

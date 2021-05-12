@@ -9,4 +9,6 @@ public abstract class PerformanceTestData implements OpaqueReferenceType {
 
     @OpaqueProperty
     public abstract IntArray sumArray();
+    @OpaqueProperty
+    public abstract IntArray quicksortIntArray();
 }

@@ -40,13 +40,41 @@ class PerformanceTest {
         return s;
     }
 
+    public static int multiplyIntVec(int[] src1, int[] src2) {
+        int c = 0;
+        for (var i = 0; i < src1.length; i++) {
+            c = src1[i] * src2[i];
+        }
+        return c;
+    }
+
+    public static void quicksortInt(int[] array, int start, int end) {
+        if (start >= end) return;
+        var pivot = array[end];
+        var left = 0;
+        var right = 0;
+        while (left + right < end - start) {
+            var num = array[start + left];
+            if (num < pivot) {
+                left++;
+            } else {
+                array[start + left] = array[end - right - 1];
+                array[end - right - 1] = pivot;
+                array[end - right] = num;
+                right++;
+            }
+        }
+        quicksortInt(array, start, start + left - 1);
+        quicksortInt(array, start + left + 1, end);
+    }
+
     public static int fib(int n) {
         if (n == 1 || n == 2) return 1;
         return fib(n - 1) + fib(n - 2);
     }
 
     public static double benchmark(Runnable fn) {
-        int loop = 10;
+        int loop = 1;
         long startTime = System.currentTimeMillis();
         for (int i = 0; i < loop; i++) {
             fn.run();
@@ -60,16 +88,19 @@ class PerformanceTest {
 
         System.out.println(env + ": Build array");
         var sumArray = toArray(data.sumArray());
+        var quicksortIntArray = toArray(data.quicksortIntArray());
 
         HashMap<String, Runnable> funcs = new HashMap<>() {{
             /*
 
              */
             put("Fibonacci", () -> fib(40));
-            put("MultiplyInt", () -> multiplyInt(1 , 1, 0x10000000));
-            put("MultiplyDouble", () -> multiplyDouble(1.0 , 1.0, 0x10000000));
+            put("MultiplyInt", () -> multiplyInt(1, 1, 0x10000000));
+            put("MultiplyDouble", () -> multiplyDouble(1.0, 1.0, 0x10000000));
             put("SumInt", () -> sumInt(data.sumArray(), data.sumArray().intArrayLength()));
             put("SumIntNative", () -> sumInt(sumArray, sumArray.length));
+            put("MultiplyIntVec", () -> multiplyIntVec(sumArray, sumArray));
+            put("QuicksortInt", () -> quicksortInt(quicksortIntArray, 0, quicksortIntArray.length - 1));
         }};
 
         System.out.println(env + ": Start");
@@ -86,7 +117,7 @@ class PerformanceTest {
         int[] result = new int[length];
         var rand = new Random();
         for (int i = 0; i < length; i++) {
-            result[i] = rand.nextInt();
+            result[i] = array.getIntValue(i);
         }
         return result;
     }

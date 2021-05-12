@@ -363,6 +363,9 @@ var bytecoder = {
              sumArray: function(target) {
                return bytecoder.toBytecoderReference(bytecoder.referenceTable[target].sumArray);
              },
+             quicksortIntArray: function(target) {
+               return bytecoder.toBytecoderReference(bytecoder.referenceTable[target].quicksortIntArray);
+             },
          },
          intarray: {
              intArrayLength: function(target) {
